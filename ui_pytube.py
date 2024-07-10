@@ -1,0 +1,484 @@
+# -*- coding: utf-8 -*-
+
+################################################################################
+## Form generated from reading UI file 'pytubePYowOZ.ui'
+##
+## Created by: Qt User Interface Compiler version 6.6.2
+##
+## WARNING! All changes made in this file will be lost when recompiling UI file!
+################################################################################
+
+from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
+    QMetaObject, QObject, QPoint, QRect,
+    QSize, QTime, QUrl, Qt)
+from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
+    QFont, QFontDatabase, QGradient, QIcon,
+    QImage, QKeySequence, QLinearGradient, QPainter,
+    QPalette, QPixmap, QRadialGradient, QTransform)
+from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
+    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
+    QSpacerItem, QStackedWidget, QToolButton, QVBoxLayout,
+    QWidget)
+import icons_rc
+
+class Ui_MainWindow(object):
+    def setupUi(self, MainWindow):
+        if not MainWindow.objectName():
+            MainWindow.setObjectName(u"MainWindow")
+        MainWindow.resize(904, 592)
+        MainWindow.setStyleSheet(u"* {\n"
+"	border: 0px solid white;\n"
+"}\n"
+"\n"
+"* QLabel {\n"
+"	color: #FFF;\n"
+"}\n"
+"\n"
+"QPushButton, QToolButton {\n"
+"	border: 0;\n"
+"}\n"
+"\n"
+"#central_widget, #pages_stacked_widget > QWidget {\n"
+"	background-color: #110200;\n"
+"}\n"
+"\n"
+"#header, #menu_lateral, #frame_pages {\n"
+"	border: 2px solid #fff;\n"
+"}\n"
+"\n"
+"/* Header */\n"
+"#input_pesquisa {\n"
+"	background-color: transparent;\n"
+"	border: 1px solid #FFF;\n"
+"	padding: 2px 6px;\n"
+"	color: #FFF;\n"
+"	border-radius: 8px;\n"
+"}\n"
+"\n"
+"#menu_lateral QToolButton {\n"
+"	fill: #FFF;\n"
+"}\n"
+"\n"
+"/* P\u00e1gina V\u00eddeo */\n"
+"#frame_pag_video {\n"
+"	background-color: transparent;\n"
+"	border: 1px solid #FFF;\n"
+"	color: #FFF;\n"
+"	border-radius: 8px;\n"
+"}\n"
+"\n"
+"#frame_video {\n"
+"	border: 1px solid #FFF;\n"
+"	border-radius: 7px;\n"
+"}\n"
+"\n"
+"#frame_video_btns QPushButton {\n"
+"	color: #FFF;\n"
+"	border: 1px solid #FFF;\n"
+"	border-radius: 9px;\n"
+"	padding: 1px 14px;\n"
+"}\n"
+"\n"
+"#btn_baixar_audio {\n"
+"	background-color: #900000"
+                        ";\n"
+"}\n"
+"\n"
+"#btn_baixar_video {\n"
+"	background-color: #833803;\n"
+"}")
+        self.central_widget = QWidget(MainWindow)
+        self.central_widget.setObjectName(u"central_widget")
+        self.verticalLayout = QVBoxLayout(self.central_widget)
+        self.verticalLayout.setSpacing(0)
+        self.verticalLayout.setObjectName(u"verticalLayout")
+        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
+        self.header = QFrame(self.central_widget)
+        self.header.setObjectName(u"header")
+        self.header.setFrameShape(QFrame.StyledPanel)
+        self.header.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_4 = QHBoxLayout(self.header)
+        self.horizontalLayout_4.setSpacing(100)
+        self.horizontalLayout_4.setObjectName(u"horizontalLayout_4")
+        self.horizontalLayout_4.setContentsMargins(0, 0, 0, 0)
+        self.frame_header_left = QFrame(self.header)
+        self.frame_header_left.setObjectName(u"frame_header_left")
+        self.frame_header_left.setFrameShape(QFrame.StyledPanel)
+        self.frame_header_left.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_3 = QHBoxLayout(self.frame_header_left)
+        self.horizontalLayout_3.setSpacing(0)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.horizontalLayout_3.setContentsMargins(20, 0, 0, 0)
+        self.btn_menu = QToolButton(self.frame_header_left)
+        self.btn_menu.setObjectName(u"btn_menu")
+        self.btn_menu.setCursor(QCursor(Qt.PointingHandCursor))
+        icon = QIcon()
+        icon.addFile(u":/icons/menu-burger.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_menu.setIcon(icon)
+        self.btn_menu.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_3.addWidget(self.btn_menu)
+
+        self.frame_logo = QFrame(self.frame_header_left)
+        self.frame_logo.setObjectName(u"frame_logo")
+        self.frame_logo.setFrameShape(QFrame.StyledPanel)
+        self.frame_logo.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_9 = QHBoxLayout(self.frame_logo)
+        self.horizontalLayout_9.setObjectName(u"horizontalLayout_9")
+        self.horizontalLayout_9.setContentsMargins(10, 10, 10, 10)
+        self.logo = QLabel(self.frame_logo)
+        self.logo.setObjectName(u"logo")
+
+        self.horizontalLayout_9.addWidget(self.logo)
+
+        self.label = QLabel(self.frame_logo)
+        self.label.setObjectName(u"label")
+
+        self.horizontalLayout_9.addWidget(self.label)
+
+
+        self.horizontalLayout_3.addWidget(self.frame_logo)
+
+
+        self.horizontalLayout_4.addWidget(self.frame_header_left)
+
+        self.frame_pesquisa = QFrame(self.header)
+        self.frame_pesquisa.setObjectName(u"frame_pesquisa")
+        self.frame_pesquisa.setFrameShape(QFrame.StyledPanel)
+        self.frame_pesquisa.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_2 = QHBoxLayout(self.frame_pesquisa)
+        self.horizontalLayout_2.setSpacing(13)
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
+        self.horizontalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.input_pesquisa = QLineEdit(self.frame_pesquisa)
+        self.input_pesquisa.setObjectName(u"input_pesquisa")
+
+        self.horizontalLayout_2.addWidget(self.input_pesquisa)
+
+        self.btn_pesquisar = QToolButton(self.frame_pesquisa)
+        self.btn_pesquisar.setObjectName(u"btn_pesquisar")
+        self.btn_pesquisar.setCursor(QCursor(Qt.PointingHandCursor))
+        icon1 = QIcon()
+        icon1.addFile(u":/icons/search.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pesquisar.setIcon(icon1)
+        self.btn_pesquisar.setIconSize(QSize(24, 24))
+
+        self.horizontalLayout_2.addWidget(self.btn_pesquisar)
+
+
+        self.horizontalLayout_4.addWidget(self.frame_pesquisa)
+
+        self.horizontalSpacer = QSpacerItem(282, 20, QSizePolicy.Policy.Fixed, QSizePolicy.Policy.Minimum)
+
+        self.horizontalLayout_4.addItem(self.horizontalSpacer)
+
+
+        self.verticalLayout.addWidget(self.header)
+
+        self.main_frame = QFrame(self.central_widget)
+        self.main_frame.setObjectName(u"main_frame")
+        self.main_frame.setFrameShape(QFrame.StyledPanel)
+        self.main_frame.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout = QHBoxLayout(self.main_frame)
+        self.horizontalLayout.setSpacing(0)
+        self.horizontalLayout.setObjectName(u"horizontalLayout")
+        self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
+        self.menu_lateral = QFrame(self.main_frame)
+        self.menu_lateral.setObjectName(u"menu_lateral")
+        self.menu_lateral.setFrameShape(QFrame.StyledPanel)
+        self.menu_lateral.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_2 = QVBoxLayout(self.menu_lateral)
+        self.verticalLayout_2.setSpacing(0)
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.verticalLayout_2.setContentsMargins(0, 0, 0, 0)
+        self.menu_btns = QFrame(self.menu_lateral)
+        self.menu_btns.setObjectName(u"menu_btns")
+        self.menu_btns.setFrameShape(QFrame.StyledPanel)
+        self.menu_btns.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_5 = QVBoxLayout(self.menu_btns)
+        self.verticalLayout_5.setObjectName(u"verticalLayout_5")
+        self.btn_pag_home = QToolButton(self.menu_btns)
+        self.btn_pag_home.setObjectName(u"btn_pag_home")
+        self.btn_pag_home.setCursor(QCursor(Qt.PointingHandCursor))
+        icon2 = QIcon()
+        icon2.addFile(u":/icons/home.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pag_home.setIcon(icon2)
+        self.btn_pag_home.setIconSize(QSize(24, 24))
+        self.btn_pag_home.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        self.btn_pag_home.setArrowType(Qt.NoArrow)
+
+        self.verticalLayout_5.addWidget(self.btn_pag_home)
+
+        self.btn_pag_video = QToolButton(self.menu_btns)
+        self.btn_pag_video.setObjectName(u"btn_pag_video")
+        self.btn_pag_video.setCursor(QCursor(Qt.PointingHandCursor))
+        icon3 = QIcon()
+        icon3.addFile(u":/icons/play-alt-fill.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pag_video.setIcon(icon3)
+        self.btn_pag_video.setIconSize(QSize(24, 24))
+
+        self.verticalLayout_5.addWidget(self.btn_pag_video)
+
+        self.btn_pag_favoritos = QToolButton(self.menu_btns)
+        self.btn_pag_favoritos.setObjectName(u"btn_pag_favoritos")
+        self.btn_pag_favoritos.setCursor(QCursor(Qt.PointingHandCursor))
+        icon4 = QIcon()
+        icon4.addFile(u":/icons/heart.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pag_favoritos.setIcon(icon4)
+        self.btn_pag_favoritos.setIconSize(QSize(24, 24))
+        self.btn_pag_favoritos.setToolButtonStyle(Qt.ToolButtonIconOnly)
+
+        self.verticalLayout_5.addWidget(self.btn_pag_favoritos)
+
+
+        self.verticalLayout_2.addWidget(self.menu_btns, 0, Qt.AlignTop)
+
+
+        self.horizontalLayout.addWidget(self.menu_lateral)
+
+        self.frame_pages = QFrame(self.main_frame)
+        self.frame_pages.setObjectName(u"frame_pages")
+        self.frame_pages.setFrameShape(QFrame.StyledPanel)
+        self.frame_pages.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_5 = QHBoxLayout(self.frame_pages)
+        self.horizontalLayout_5.setSpacing(0)
+        self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
+        self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
+        self.pages_stacked_widget = QStackedWidget(self.frame_pages)
+        self.pages_stacked_widget.setObjectName(u"pages_stacked_widget")
+        self.pag_home = QWidget()
+        self.pag_home.setObjectName(u"pag_home")
+        self.verticalLayout_3 = QVBoxLayout(self.pag_home)
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.frame_centro_home = QFrame(self.pag_home)
+        self.frame_centro_home.setObjectName(u"frame_centro_home")
+        self.frame_centro_home.setFrameShape(QFrame.StyledPanel)
+        self.frame_centro_home.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_4 = QVBoxLayout(self.frame_centro_home)
+        self.verticalLayout_4.setObjectName(u"verticalLayout_4")
+        self.topo_centro = QFrame(self.frame_centro_home)
+        self.topo_centro.setObjectName(u"topo_centro")
+        self.topo_centro.setFrameShape(QFrame.StyledPanel)
+        self.topo_centro.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_6 = QHBoxLayout(self.topo_centro)
+        self.horizontalLayout_6.setObjectName(u"horizontalLayout_6")
+        self.logo_2 = QLabel(self.topo_centro)
+        self.logo_2.setObjectName(u"logo_2")
+        self.logo_2.setTextFormat(Qt.MarkdownText)
+
+        self.horizontalLayout_6.addWidget(self.logo_2, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.verticalLayout_4.addWidget(self.topo_centro)
+
+        self.meio_centro = QFrame(self.frame_centro_home)
+        self.meio_centro.setObjectName(u"meio_centro")
+        self.meio_centro.setFrameShape(QFrame.StyledPanel)
+        self.meio_centro.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_7 = QHBoxLayout(self.meio_centro)
+        self.horizontalLayout_7.setObjectName(u"horizontalLayout_7")
+        self.label_logo = QLabel(self.meio_centro)
+        self.label_logo.setObjectName(u"label_logo")
+
+        self.horizontalLayout_7.addWidget(self.label_logo, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.verticalLayout_4.addWidget(self.meio_centro)
+
+        self.baixo_centro = QFrame(self.frame_centro_home)
+        self.baixo_centro.setObjectName(u"baixo_centro")
+        self.baixo_centro.setFrameShape(QFrame.StyledPanel)
+        self.baixo_centro.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_8 = QHBoxLayout(self.baixo_centro)
+        self.horizontalLayout_8.setObjectName(u"horizontalLayout_8")
+        self.label_descricao = QLabel(self.baixo_centro)
+        self.label_descricao.setObjectName(u"label_descricao")
+
+        self.horizontalLayout_8.addWidget(self.label_descricao, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+
+        self.verticalLayout_4.addWidget(self.baixo_centro)
+
+
+        self.verticalLayout_3.addWidget(self.frame_centro_home, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.pages_stacked_widget.addWidget(self.pag_home)
+        self.pag_video = QWidget()
+        self.pag_video.setObjectName(u"pag_video")
+        self.verticalLayout_8 = QVBoxLayout(self.pag_video)
+        self.verticalLayout_8.setObjectName(u"verticalLayout_8")
+        self.frame_pag_video = QFrame(self.pag_video)
+        self.frame_pag_video.setObjectName(u"frame_pag_video")
+        self.frame_pag_video.setFrameShape(QFrame.StyledPanel)
+        self.frame_pag_video.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_7 = QVBoxLayout(self.frame_pag_video)
+        self.verticalLayout_7.setObjectName(u"verticalLayout_7")
+        self.frame__info_video = QFrame(self.frame_pag_video)
+        self.frame__info_video.setObjectName(u"frame__info_video")
+        self.frame__info_video.setFrameShape(QFrame.StyledPanel)
+        self.frame__info_video.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_6 = QVBoxLayout(self.frame__info_video)
+        self.verticalLayout_6.setObjectName(u"verticalLayout_6")
+        self.verticalLayout_6.setContentsMargins(0, 0, 0, 0)
+        self.frame_video = QFrame(self.frame__info_video)
+        self.frame_video.setObjectName(u"frame_video")
+        self.frame_video.setFrameShape(QFrame.StyledPanel)
+        self.frame_video.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_11 = QHBoxLayout(self.frame_video)
+        self.horizontalLayout_11.setObjectName(u"horizontalLayout_11")
+        self.horizontalLayout_11.setContentsMargins(0, 0, 0, 0)
+        self.icone_video = QLabel(self.frame_video)
+        self.icone_video.setObjectName(u"icone_video")
+        self.icone_video.setMaximumSize(QSize(32, 32))
+        self.icone_video.setPixmap(QPixmap(u":/icons/play.svg"))
+        self.icone_video.setScaledContents(True)
+
+        self.horizontalLayout_11.addWidget(self.icone_video)
+
+        self.nome_video = QLabel(self.frame_video)
+        self.nome_video.setObjectName(u"nome_video")
+        font = QFont()
+        font.setFamilies([u"Ebrima"])
+        font.setPointSize(10)
+        font.setBold(True)
+        font.setItalic(True)
+        self.nome_video.setFont(font)
+        self.nome_video.setWordWrap(True)
+
+        self.horizontalLayout_11.addWidget(self.nome_video)
+
+
+        self.verticalLayout_6.addWidget(self.frame_video)
+
+        self.label_nome_autor = QLabel(self.frame__info_video)
+        self.label_nome_autor.setObjectName(u"label_nome_autor")
+        font1 = QFont()
+        font1.setFamilies([u"Comic Sans MS"])
+        font1.setPointSize(10)
+        font1.setItalic(True)
+        self.label_nome_autor.setFont(font1)
+
+        self.verticalLayout_6.addWidget(self.label_nome_autor)
+
+        self.frame_dura_view = QFrame(self.frame__info_video)
+        self.frame_dura_view.setObjectName(u"frame_dura_view")
+        self.frame_dura_view.setFrameShape(QFrame.StyledPanel)
+        self.frame_dura_view.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_13 = QHBoxLayout(self.frame_dura_view)
+        self.horizontalLayout_13.setSpacing(0)
+        self.horizontalLayout_13.setObjectName(u"horizontalLayout_13")
+        self.horizontalLayout_13.setContentsMargins(0, 0, 0, 0)
+        self.frame_duracao = QFrame(self.frame_dura_view)
+        self.frame_duracao.setObjectName(u"frame_duracao")
+        self.frame_duracao.setFrameShape(QFrame.StyledPanel)
+        self.frame_duracao.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_12 = QHBoxLayout(self.frame_duracao)
+        self.horizontalLayout_12.setSpacing(0)
+        self.horizontalLayout_12.setObjectName(u"horizontalLayout_12")
+        self.horizontalLayout_12.setContentsMargins(0, 0, 0, 0)
+        self.label_duracao = QLabel(self.frame_duracao)
+        self.label_duracao.setObjectName(u"label_duracao")
+        font2 = QFont()
+        font2.setFamilies([u"Comic Sans MS"])
+        font2.setPointSize(10)
+        self.label_duracao.setFont(font2)
+
+        self.horizontalLayout_12.addWidget(self.label_duracao)
+
+
+        self.horizontalLayout_13.addWidget(self.frame_duracao)
+
+        self.frame_views = QFrame(self.frame_dura_view)
+        self.frame_views.setObjectName(u"frame_views")
+        self.frame_views.setFrameShape(QFrame.StyledPanel)
+        self.frame_views.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_14 = QHBoxLayout(self.frame_views)
+        self.horizontalLayout_14.setSpacing(0)
+        self.horizontalLayout_14.setObjectName(u"horizontalLayout_14")
+        self.horizontalLayout_14.setContentsMargins(0, 0, 0, 0)
+        self.label_views = QLabel(self.frame_views)
+        self.label_views.setObjectName(u"label_views")
+        self.label_views.setFont(font2)
+
+        self.horizontalLayout_14.addWidget(self.label_views)
+
+
+        self.horizontalLayout_13.addWidget(self.frame_views)
+
+
+        self.verticalLayout_6.addWidget(self.frame_dura_view)
+
+
+        self.verticalLayout_7.addWidget(self.frame__info_video)
+
+        self.frame_video_btns = QFrame(self.frame_pag_video)
+        self.frame_video_btns.setObjectName(u"frame_video_btns")
+        self.frame_video_btns.setFrameShape(QFrame.StyledPanel)
+        self.frame_video_btns.setFrameShadow(QFrame.Raised)
+        self.horizontalLayout_10 = QHBoxLayout(self.frame_video_btns)
+        self.horizontalLayout_10.setSpacing(50)
+        self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
+        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.btn_baixar_audio = QPushButton(self.frame_video_btns)
+        self.btn_baixar_audio.setObjectName(u"btn_baixar_audio")
+        font3 = QFont()
+        font3.setFamilies([u"Microsoft YaHei"])
+        font3.setPointSize(11)
+        font3.setBold(False)
+        self.btn_baixar_audio.setFont(font3)
+        self.btn_baixar_audio.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.horizontalLayout_10.addWidget(self.btn_baixar_audio)
+
+        self.btn_baixar_video = QPushButton(self.frame_video_btns)
+        self.btn_baixar_video.setObjectName(u"btn_baixar_video")
+        self.btn_baixar_video.setFont(font3)
+        self.btn_baixar_video.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.horizontalLayout_10.addWidget(self.btn_baixar_video)
+
+
+        self.verticalLayout_7.addWidget(self.frame_video_btns)
+
+
+        self.verticalLayout_8.addWidget(self.frame_pag_video, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.pages_stacked_widget.addWidget(self.pag_video)
+
+        self.horizontalLayout_5.addWidget(self.pages_stacked_widget)
+
+
+        self.horizontalLayout.addWidget(self.frame_pages)
+
+
+        self.verticalLayout.addWidget(self.main_frame)
+
+        MainWindow.setCentralWidget(self.central_widget)
+
+        self.retranslateUi(MainWindow)
+
+        self.pages_stacked_widget.setCurrentIndex(1)
+
+
+        QMetaObject.connectSlotsByName(MainWindow)
+    # setupUi
+
+    def retranslateUi(self, MainWindow):
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        self.btn_menu.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.logo.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p><img src=\":/icons/icon-32x32.png\"/></p></body></html>", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Logo", None))
+        self.input_pesquisa.setPlaceholderText(QCoreApplication.translate("MainWindow", u"Pesquisa ou URL", None))
+        self.btn_pesquisar.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.btn_pag_video.setText(QCoreApplication.translate("MainWindow", u"...", None))
+        self.logo_2.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\"><img src=\":/icons/icon-200x200.png\"/></p></body></html>", None))
+        self.label_logo.setText(QCoreApplication.translate("MainWindow", u"T\u00edtulo brabo", None))
+        self.label_descricao.setText(QCoreApplication.translate("MainWindow", u"Descri\u00e7\u00e3o mais top que j\u00e1 existiu", None))
+        self.nome_video.setText(QCoreApplication.translate("MainWindow", u"Nome do V\u00eddeo", None))
+        self.label_nome_autor.setText(QCoreApplication.translate("MainWindow", u"Por: Nome do Autor", None))
+        self.label_duracao.setText(QCoreApplication.translate("MainWindow", u"Dura\u00e7\u00e3o: 0:00", None))
+        self.label_views.setText(QCoreApplication.translate("MainWindow", u"Views: 0", None))
+        self.btn_baixar_audio.setText(QCoreApplication.translate("MainWindow", u"Baixar \u00c1udio", None))
+        self.btn_baixar_video.setText(QCoreApplication.translate("MainWindow", u"Baixar V\u00eddeo", None))
+    # retranslateUi
+

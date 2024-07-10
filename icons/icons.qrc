@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="icons">
+    <file>play-alt-fill.svg</file>
+    <file>heart.svg</file>
+    <file>home.svg</file>
+    <file>play.svg</file>
+    <file>icon_2.png</file>
+    <file>icon-32x32.png</file>
+    <file>icon-200x200.png</file>
+    <file>menu-burger.svg</file>
+    <file>python.svg</file>
+    <file>search.svg</file>
+    <file>youtube.svg</file>
+  </qresource>
+</RCC>
