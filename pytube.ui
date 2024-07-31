@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>904</width>
+    <width>895</width>
     <height>592</height>
    </rect>
   </property>
@@ -14,7 +14,11 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">* {
+   <string notr="true">QMessageBox QLabel {
+	color: #000;
+}
+
+* {
 	border: 0px solid white;
 }
 
@@ -64,16 +68,39 @@ QPushButton, QToolButton {
 	color: #FFF;
 	border: 1px solid #FFF;
 	border-radius: 9px;
-	padding: 1px 14px;
+	padding: 1px 20px;
 }
 
 #btn_baixar_audio {
 	background-color: #900000;
 }
+#btn_baixar_audio::hover {
+	background-color: #AF1C1C;
+}
 
 #btn_baixar_video {
 	background-color: #833803;
-}</string>
+}
+#btn_baixar_video::hover {
+	background-color: #AB581E;
+}
+
+#frame_qualidade QComboBox {
+	background-color: #FFBBBB;
+	border: 1px solid #FFF;
+	border-radius: 3px;
+}
+
+#frame_qualidade QComboBox::down-arrow {
+	image: url(:/icons/angle-down.svg);
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid darkgray;
+	color: #FFF;
+	background-color: #5D1B1B;
+}
+</string>
   </property>
   <widget class="QWidget" name="central_widget">
    <layout class="QVBoxLayout" name="verticalLayout">
@@ -579,7 +606,7 @@ QPushButton, QToolButton {
                          <property name="font">
                           <font>
                            <family>Ebrima</family>
-                           <pointsize>10</pointsize>
+                           <pointsize>12</pointsize>
                            <italic>true</italic>
                            <bold>true</bold>
                           </font>
@@ -600,12 +627,15 @@ QPushButton, QToolButton {
                       <property name="font">
                        <font>
                         <family>Comic Sans MS</family>
-                        <pointsize>10</pointsize>
+                        <pointsize>13</pointsize>
                         <italic>true</italic>
                        </font>
                       </property>
                       <property name="text">
                        <string>Por: Nome do Autor</string>
+                      </property>
+                      <property name="margin">
+                       <number>0</number>
                       </property>
                      </widget>
                     </item>
@@ -662,7 +692,7 @@ QPushButton, QToolButton {
                             <property name="font">
                              <font>
                               <family>Comic Sans MS</family>
-                              <pointsize>10</pointsize>
+                              <pointsize>11</pointsize>
                              </font>
                             </property>
                             <property name="text">
@@ -702,7 +732,7 @@ QPushButton, QToolButton {
                             <property name="font">
                              <font>
                               <family>Comic Sans MS</family>
-                              <pointsize>10</pointsize>
+                              <pointsize>11</pointsize>
                              </font>
                             </property>
                             <property name="text">
@@ -720,6 +750,100 @@ QPushButton, QToolButton {
                   </widget>
                  </item>
                  <item>
+                  <widget class="QFrame" name="frame_qualidade">
+                   <property name="font">
+                    <font>
+                     <pointsize>8</pointsize>
+                    </font>
+                   </property>
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
+                   </property>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
+                   </property>
+                   <layout class="QGridLayout" name="gridLayout">
+                    <property name="leftMargin">
+                     <number>10</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>10</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>10</number>
+                    </property>
+                    <property name="horizontalSpacing">
+                     <number>25</number>
+                    </property>
+                    <property name="verticalSpacing">
+                     <number>3</number>
+                    </property>
+                    <item row="1" column="0">
+                     <widget class="QComboBox" name="qualidade_audio">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>11</pointsize>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QComboBox" name="qualidade_video">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>11</pointsize>
+                        <italic>false</italic>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="0" alignment="Qt::AlignHCenter">
+                     <widget class="QLabel" name="label_qualidade_audio">
+                      <property name="font">
+                       <font>
+                        <family>Comic Sans MS</family>
+                        <pointsize>11</pointsize>
+                        <italic>true</italic>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Qualidade Áudio</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="0" column="1" alignment="Qt::AlignHCenter">
+                     <widget class="QLabel" name="label_qualidade_video">
+                      <property name="font">
+                       <font>
+                        <family>Comic Sans MS</family>
+                        <pointsize>11</pointsize>
+                        <italic>true</italic>
+                        <bold>false</bold>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>Qualidade Vídeo</string>
+                      </property>
+                     </widget>
+                    </item>
+                   </layout>
+                  </widget>
+                 </item>
+                 <item>
                   <widget class="QFrame" name="frame_video_btns">
                    <property name="frameShape">
                     <enum>QFrame::StyledPanel</enum>
@@ -729,16 +853,16 @@ QPushButton, QToolButton {
                    </property>
                    <layout class="QHBoxLayout" name="horizontalLayout_10">
                     <property name="spacing">
-                     <number>50</number>
+                     <number>25</number>
                     </property>
                     <property name="leftMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="topMargin">
                      <number>0</number>
                     </property>
                     <property name="rightMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="bottomMargin">
                      <number>0</number>
@@ -748,8 +872,8 @@ QPushButton, QToolButton {
                       <property name="font">
                        <font>
                         <family>Microsoft YaHei</family>
-                        <pointsize>11</pointsize>
-                        <bold>false</bold>
+                        <pointsize>12</pointsize>
+                        <bold>true</bold>
                        </font>
                       </property>
                       <property name="cursor">
@@ -765,8 +889,8 @@ QPushButton, QToolButton {
                       <property name="font">
                        <font>
                         <family>Microsoft YaHei</family>
-                        <pointsize>11</pointsize>
-                        <bold>false</bold>
+                        <pointsize>12</pointsize>
+                        <bold>true</bold>
                        </font>
                       </property>
                       <property name="cursor">

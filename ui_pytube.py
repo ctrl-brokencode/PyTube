@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pytubePYowOZ.ui'
+## Form generated from reading UI file 'pytubemfQgFs.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -15,18 +15,22 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QFont, QFontDatabase, QGradient, QIcon,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QFrame, QHBoxLayout, QLabel,
-    QLineEdit, QMainWindow, QPushButton, QSizePolicy,
-    QSpacerItem, QStackedWidget, QToolButton, QVBoxLayout,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
+    QHBoxLayout, QLabel, QLineEdit, QMainWindow,
+    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
+    QToolButton, QVBoxLayout, QWidget)
 import icons_rc
 
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(904, 592)
-        MainWindow.setStyleSheet(u"* {\n"
+        MainWindow.resize(895, 592)
+        MainWindow.setStyleSheet(u"QMessageBox QLabel {\n"
+"	color: #000;\n"
+"}\n"
+"\n"
+"* {\n"
 "	border: 0px solid white;\n"
 "}\n"
 "\n"
@@ -76,17 +80,40 @@ class Ui_MainWindow(object):
 "	color: #FFF;\n"
 "	border: 1px solid #FFF;\n"
 "	border-radius: 9px;\n"
-"	padding: 1px 14px;\n"
+"	padding: 1px 20px;\n"
 "}\n"
 "\n"
-"#btn_baixar_audio {\n"
-"	background-color: #900000"
-                        ";\n"
+""
+                        "#btn_baixar_audio {\n"
+"	background-color: #900000;\n"
+"}\n"
+"#btn_baixar_audio::hover {\n"
+"	background-color: #AF1C1C;\n"
 "}\n"
 "\n"
 "#btn_baixar_video {\n"
 "	background-color: #833803;\n"
-"}")
+"}\n"
+"#btn_baixar_video::hover {\n"
+"	background-color: #AB581E;\n"
+"}\n"
+"\n"
+"#frame_qualidade QComboBox {\n"
+"	background-color: #FFBBBB;\n"
+"	border: 1px solid #FFF;\n"
+"	border-radius: 3px;\n"
+"}\n"
+"\n"
+"#frame_qualidade QComboBox::down-arrow {\n"
+"	image: url(:/icons/angle-down.svg);\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    border: 1px solid darkgray;\n"
+"	color: #FFF;\n"
+"	background-color: #5D1B1B;\n"
+"}\n"
+"")
         self.central_widget = QWidget(MainWindow)
         self.central_widget.setObjectName(u"central_widget")
         self.verticalLayout = QVBoxLayout(self.central_widget)
@@ -339,7 +366,7 @@ class Ui_MainWindow(object):
         self.nome_video.setObjectName(u"nome_video")
         font = QFont()
         font.setFamilies([u"Ebrima"])
-        font.setPointSize(10)
+        font.setPointSize(12)
         font.setBold(True)
         font.setItalic(True)
         self.nome_video.setFont(font)
@@ -354,9 +381,10 @@ class Ui_MainWindow(object):
         self.label_nome_autor.setObjectName(u"label_nome_autor")
         font1 = QFont()
         font1.setFamilies([u"Comic Sans MS"])
-        font1.setPointSize(10)
+        font1.setPointSize(13)
         font1.setItalic(True)
         self.label_nome_autor.setFont(font1)
+        self.label_nome_autor.setMargin(0)
 
         self.verticalLayout_6.addWidget(self.label_nome_autor)
 
@@ -380,7 +408,7 @@ class Ui_MainWindow(object):
         self.label_duracao.setObjectName(u"label_duracao")
         font2 = QFont()
         font2.setFamilies([u"Comic Sans MS"])
-        font2.setPointSize(10)
+        font2.setPointSize(11)
         self.label_duracao.setFont(font2)
 
         self.horizontalLayout_12.addWidget(self.label_duracao)
@@ -411,28 +439,83 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_7.addWidget(self.frame__info_video)
 
+        self.frame_qualidade = QFrame(self.frame_pag_video)
+        self.frame_qualidade.setObjectName(u"frame_qualidade")
+        font3 = QFont()
+        font3.setPointSize(8)
+        self.frame_qualidade.setFont(font3)
+        self.frame_qualidade.setFrameShape(QFrame.StyledPanel)
+        self.frame_qualidade.setFrameShadow(QFrame.Raised)
+        self.gridLayout = QGridLayout(self.frame_qualidade)
+        self.gridLayout.setObjectName(u"gridLayout")
+        self.gridLayout.setHorizontalSpacing(25)
+        self.gridLayout.setVerticalSpacing(3)
+        self.gridLayout.setContentsMargins(10, 0, 10, 10)
+        self.qualidade_audio = QComboBox(self.frame_qualidade)
+        self.qualidade_audio.setObjectName(u"qualidade_audio")
+        font4 = QFont()
+        font4.setFamilies([u"Arial"])
+        font4.setPointSize(11)
+        font4.setBold(True)
+        self.qualidade_audio.setFont(font4)
+        self.qualidade_audio.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.gridLayout.addWidget(self.qualidade_audio, 1, 0, 1, 1)
+
+        self.qualidade_video = QComboBox(self.frame_qualidade)
+        self.qualidade_video.setObjectName(u"qualidade_video")
+        font5 = QFont()
+        font5.setFamilies([u"Arial"])
+        font5.setPointSize(11)
+        font5.setBold(True)
+        font5.setItalic(False)
+        self.qualidade_video.setFont(font5)
+        self.qualidade_video.setCursor(QCursor(Qt.PointingHandCursor))
+
+        self.gridLayout.addWidget(self.qualidade_video, 1, 1, 1, 1)
+
+        self.label_qualidade_audio = QLabel(self.frame_qualidade)
+        self.label_qualidade_audio.setObjectName(u"label_qualidade_audio")
+        font6 = QFont()
+        font6.setFamilies([u"Comic Sans MS"])
+        font6.setPointSize(11)
+        font6.setBold(False)
+        font6.setItalic(True)
+        self.label_qualidade_audio.setFont(font6)
+
+        self.gridLayout.addWidget(self.label_qualidade_audio, 0, 0, 1, 1, Qt.AlignHCenter)
+
+        self.label_qualidade_video = QLabel(self.frame_qualidade)
+        self.label_qualidade_video.setObjectName(u"label_qualidade_video")
+        self.label_qualidade_video.setFont(font6)
+
+        self.gridLayout.addWidget(self.label_qualidade_video, 0, 1, 1, 1, Qt.AlignHCenter)
+
+
+        self.verticalLayout_7.addWidget(self.frame_qualidade)
+
         self.frame_video_btns = QFrame(self.frame_pag_video)
         self.frame_video_btns.setObjectName(u"frame_video_btns")
         self.frame_video_btns.setFrameShape(QFrame.StyledPanel)
         self.frame_video_btns.setFrameShadow(QFrame.Raised)
         self.horizontalLayout_10 = QHBoxLayout(self.frame_video_btns)
-        self.horizontalLayout_10.setSpacing(50)
+        self.horizontalLayout_10.setSpacing(25)
         self.horizontalLayout_10.setObjectName(u"horizontalLayout_10")
-        self.horizontalLayout_10.setContentsMargins(0, 0, 0, 0)
+        self.horizontalLayout_10.setContentsMargins(10, 0, 10, 0)
         self.btn_baixar_audio = QPushButton(self.frame_video_btns)
         self.btn_baixar_audio.setObjectName(u"btn_baixar_audio")
-        font3 = QFont()
-        font3.setFamilies([u"Microsoft YaHei"])
-        font3.setPointSize(11)
-        font3.setBold(False)
-        self.btn_baixar_audio.setFont(font3)
+        font7 = QFont()
+        font7.setFamilies([u"Microsoft YaHei"])
+        font7.setPointSize(12)
+        font7.setBold(True)
+        self.btn_baixar_audio.setFont(font7)
         self.btn_baixar_audio.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_10.addWidget(self.btn_baixar_audio)
 
         self.btn_baixar_video = QPushButton(self.frame_video_btns)
         self.btn_baixar_video.setObjectName(u"btn_baixar_video")
-        self.btn_baixar_video.setFont(font3)
+        self.btn_baixar_video.setFont(font7)
         self.btn_baixar_video.setCursor(QCursor(Qt.PointingHandCursor))
 
         self.horizontalLayout_10.addWidget(self.btn_baixar_video)
@@ -478,6 +561,8 @@ class Ui_MainWindow(object):
         self.label_nome_autor.setText(QCoreApplication.translate("MainWindow", u"Por: Nome do Autor", None))
         self.label_duracao.setText(QCoreApplication.translate("MainWindow", u"Dura\u00e7\u00e3o: 0:00", None))
         self.label_views.setText(QCoreApplication.translate("MainWindow", u"Views: 0", None))
+        self.label_qualidade_audio.setText(QCoreApplication.translate("MainWindow", u"Qualidade \u00c1udio", None))
+        self.label_qualidade_video.setText(QCoreApplication.translate("MainWindow", u"Qualidade V\u00eddeo", None))
         self.btn_baixar_audio.setText(QCoreApplication.translate("MainWindow", u"Baixar \u00c1udio", None))
         self.btn_baixar_video.setText(QCoreApplication.translate("MainWindow", u"Baixar V\u00eddeo", None))
     # retranslateUi
