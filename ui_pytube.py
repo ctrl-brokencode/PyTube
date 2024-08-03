@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'pytubemfQgFs.ui'
+## Form generated from reading UI file 'pytubeXFbVvN.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.6.2
 ##
@@ -17,8 +17,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QComboBox, QFrame, QGridLayout,
     QHBoxLayout, QLabel, QLineEdit, QMainWindow,
-    QPushButton, QSizePolicy, QSpacerItem, QStackedWidget,
-    QToolButton, QVBoxLayout, QWidget)
+    QProgressBar, QPushButton, QSizePolicy, QSpacerItem,
+    QStackedWidget, QToolButton, QVBoxLayout, QWidget)
 import icons_rc
 
 class Ui_MainWindow(object):
@@ -104,7 +104,7 @@ class Ui_MainWindow(object):
 "	border-radius: 3px;\n"
 "}\n"
 "\n"
-"#frame_qualidade QComboBox::down-arrow {\n"
+"QComboBox::down-arrow {\n"
 "	image: url(:/icons/angle-down.svg);\n"
 "}\n"
 "\n"
@@ -246,16 +246,16 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_5.addWidget(self.btn_pag_video)
 
-        self.btn_pag_favoritos = QToolButton(self.menu_btns)
-        self.btn_pag_favoritos.setObjectName(u"btn_pag_favoritos")
-        self.btn_pag_favoritos.setCursor(QCursor(Qt.PointingHandCursor))
+        self.btn_pag_pasta = QToolButton(self.menu_btns)
+        self.btn_pag_pasta.setObjectName(u"btn_pag_pasta")
+        self.btn_pag_pasta.setCursor(QCursor(Qt.PointingHandCursor))
         icon4 = QIcon()
-        icon4.addFile(u":/icons/heart.svg", QSize(), QIcon.Normal, QIcon.Off)
-        self.btn_pag_favoritos.setIcon(icon4)
-        self.btn_pag_favoritos.setIconSize(QSize(24, 24))
-        self.btn_pag_favoritos.setToolButtonStyle(Qt.ToolButtonIconOnly)
+        icon4.addFile(u":/icons/folder-open.svg", QSize(), QIcon.Normal, QIcon.Off)
+        self.btn_pag_pasta.setIcon(icon4)
+        self.btn_pag_pasta.setIconSize(QSize(24, 24))
+        self.btn_pag_pasta.setToolButtonStyle(Qt.ToolButtonIconOnly)
 
-        self.verticalLayout_5.addWidget(self.btn_pag_favoritos)
+        self.verticalLayout_5.addWidget(self.btn_pag_pasta)
 
 
         self.verticalLayout_2.addWidget(self.menu_btns, 0, Qt.AlignTop)
@@ -271,8 +271,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_5.setSpacing(0)
         self.horizontalLayout_5.setObjectName(u"horizontalLayout_5")
         self.horizontalLayout_5.setContentsMargins(0, 0, 0, 0)
-        self.pages_stacked_widget = QStackedWidget(self.frame_pages)
-        self.pages_stacked_widget.setObjectName(u"pages_stacked_widget")
+        self.paginas = QStackedWidget(self.frame_pages)
+        self.paginas.setObjectName(u"paginas")
         self.pag_home = QWidget()
         self.pag_home.setObjectName(u"pag_home")
         self.verticalLayout_3 = QVBoxLayout(self.pag_home)
@@ -329,7 +329,7 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_3.addWidget(self.frame_centro_home, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.pages_stacked_widget.addWidget(self.pag_home)
+        self.paginas.addWidget(self.pag_home)
         self.pag_video = QWidget()
         self.pag_video.setObjectName(u"pag_video")
         self.verticalLayout_8 = QVBoxLayout(self.pag_video)
@@ -526,9 +526,47 @@ class Ui_MainWindow(object):
 
         self.verticalLayout_8.addWidget(self.frame_pag_video, 0, Qt.AlignHCenter|Qt.AlignVCenter)
 
-        self.pages_stacked_widget.addWidget(self.pag_video)
+        self.paginas.addWidget(self.pag_video)
+        self.pag_carregando = QWidget()
+        self.pag_carregando.setObjectName(u"pag_carregando")
+        self.horizontalLayout_15 = QHBoxLayout(self.pag_carregando)
+        self.horizontalLayout_15.setObjectName(u"horizontalLayout_15")
+        self.frame_pag_carregando = QFrame(self.pag_carregando)
+        self.frame_pag_carregando.setObjectName(u"frame_pag_carregando")
+        self.frame_pag_carregando.setFrameShape(QFrame.StyledPanel)
+        self.frame_pag_carregando.setFrameShadow(QFrame.Raised)
+        self.verticalLayout_9 = QVBoxLayout(self.frame_pag_carregando)
+        self.verticalLayout_9.setSpacing(20)
+        self.verticalLayout_9.setObjectName(u"verticalLayout_9")
+        self.verticalLayout_9.setContentsMargins(0, 0, 0, 0)
+        self.label_carregando = QLabel(self.frame_pag_carregando)
+        self.label_carregando.setObjectName(u"label_carregando")
+        font8 = QFont()
+        font8.setFamilies([u"Ebrima"])
+        font8.setPointSize(19)
+        font8.setBold(True)
+        self.label_carregando.setFont(font8)
 
-        self.horizontalLayout_5.addWidget(self.pages_stacked_widget)
+        self.verticalLayout_9.addWidget(self.label_carregando)
+
+        self.progresso = QProgressBar(self.frame_pag_carregando)
+        self.progresso.setObjectName(u"progresso")
+        font9 = QFont()
+        font9.setFamilies([u"Calibri Light"])
+        font9.setBold(True)
+        font9.setItalic(True)
+        self.progresso.setFont(font9)
+        self.progresso.setValue(90)
+        self.progresso.setAlignment(Qt.AlignCenter)
+
+        self.verticalLayout_9.addWidget(self.progresso)
+
+
+        self.horizontalLayout_15.addWidget(self.frame_pag_carregando, 0, Qt.AlignHCenter|Qt.AlignVCenter)
+
+        self.paginas.addWidget(self.pag_carregando)
+
+        self.horizontalLayout_5.addWidget(self.paginas)
 
 
         self.horizontalLayout.addWidget(self.frame_pages)
@@ -540,7 +578,7 @@ class Ui_MainWindow(object):
 
         self.retranslateUi(MainWindow)
 
-        self.pages_stacked_widget.setCurrentIndex(1)
+        self.paginas.setCurrentIndex(1)
 
 
         QMetaObject.connectSlotsByName(MainWindow)
@@ -565,5 +603,6 @@ class Ui_MainWindow(object):
         self.label_qualidade_video.setText(QCoreApplication.translate("MainWindow", u"Qualidade V\u00eddeo", None))
         self.btn_baixar_audio.setText(QCoreApplication.translate("MainWindow", u"Baixar \u00c1udio", None))
         self.btn_baixar_video.setText(QCoreApplication.translate("MainWindow", u"Baixar V\u00eddeo", None))
+        self.label_carregando.setText(QCoreApplication.translate("MainWindow", u"<html><head/><body><p align=\"center\">Carregando...</p></body></html>", None))
     # retranslateUi
 

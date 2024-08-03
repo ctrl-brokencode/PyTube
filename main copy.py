@@ -4,7 +4,7 @@ import json
 import traceback
 
 from moviepy.editor import VideoFileClip, AudioFileClip
-from PySide6.QtCore import QObject, QThread, Signal, SignalInstance, QRunnable, QThreadPool
+from PySide6.QtCore import QObject, QThread, Signal
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton, QFileDialog
 from pytube import YouTube, Stream, StreamQuery
 from ui_pytube import Ui_MainWindow
@@ -19,7 +19,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.setWindowTitle('Youtube do Py')
 
         self.dir_download: str | None = self.buscar_diretorio()
-        self.dir_temp: str = os.path.join(os.getcwd(), 'temp')
+        self.dir_temp: str = os.getcwd() + r'\temp'
         
         self.btn_pesquisar.clicked.connect(self.info_url)
         
@@ -38,7 +38,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Notas:
             O arquivo 'dados.json' deve estar no formato JSON válido e conter a chave 'dir' com o valor do diretório.
         """
-
         if os.path.exists('dados.json'):
             with open('dados.json', mode='r', encoding='utf-8') as file:
                 dados = json.load(file)
@@ -59,7 +58,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Notas:
             O arquivo 'dados.json' é criado ou atualizado com o diretório selecionado pelo usuário.
         """
-
         if not self.dir_download:
             QMessageBox.warning(self, 'Diretório', 'Você não tem uma pasta definida para salvar seus aúdios e vídeos! Por favor, selecione uma pasta na próxima janela ao clicar em "OK".')
 
@@ -78,46 +76,42 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     
     def info_url(self) -> None:
         """
-        Busca o vídeo a partir da pesquisa fornecida pelo usuário na caixa de texto de pesquisa.
-        
-        Caso seja um link do Youtube válido, alterna para a página de carregamento, busca as informações e as exibe na página, voltando para a página de vídeo assim que este for carregado.
+        Pega o texto fornecido pelo usuário na caixa de texto de pesquisa.
+        Caso seja um link do Youtube válido, busca as informações e as exibe na página.
+        Alterna para a página de carregamento e volta para a página de vídeo assim que este for carregado.
         """
-
         pesquisa: str = self.input_pesquisa.text()
         if not pesquisa:
             return
 
-        self.worker = Worker()
+        self.qthread = QThread()
+        self.worker = Worker(pesquisa=pesquisa)
+
+        self.worker.moveToThread(self.qthread)
+
+        # Conectar Sinais e Slots
+        self.qthread.started.connect(self.worker.info_url)
+        self.worker.terminado.connect(self.qthread.quit)
+        self.worker.terminado.connect(self.worker.deleteLater)
+        self.qthread.finished.connect(self.qthread.deleteLater)
 
         self.worker.url.connect(self.informacoes_video)
-        
-        self.progresso.hide()
+
+        self.qthread.start()
+
         self.paginas.setCurrentWidget(self.pag_carregando)
-        runnable = InfoUrlRunnable(pesquisa, self.worker.url)
-        QThreadPool.globalInstance().start(runnable)
 
 
-    def informacoes_video(self, video:YouTube | str) -> None:
-        """
-        Recebe o objeto Youtube recebido pelo sinal emitido em `self.url_signal.emit(video)`.
-
-        Caso o sinal emita uma string, então algum erro ocorreu.
-        Caso o sinal emita um objeto Youtube, as informações do vídeo são exibidas na página de vídeo.
-        """
-
-        ### CHECAGEM DO SINAL EMITIDO
-        if isinstance(video, str):
+    def informacoes_video(self, video:YouTube | str):
+        if type(video) is str:
             if video == 'regex_search':
                 QMessageBox.warning(self, 'Erro', 'Você não forneceu um link válido.')
             else:
                 QMessageBox.critical(self, 'Erro', 'Ocorreu um erro ao tentar pesquisar seu vídeo.\nPor favor, tente novamente.')
                 self.loggar_erro(video)
-            self.paginas.setCurrentWidget(self.pag_video)
             return
 
-        ### REGISTRAR INFORMAÇÕES        
         self.video: YouTube = video
-        self.video.register_on_progress_callback(self.progresso_download)
         
         duracao: int = self.video.length
         mins: int = duracao // 60
@@ -134,15 +128,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         audios: list[Stream] = [stream.abr for stream in filtro_audio]
         videos: list[Stream] = [stream.resolution for stream in filtro_video]
-
-        ### REGISTRAR AS STREAMS
-        self.qualidade_audio.clear()
-        self.qualidade_video.clear()
         
         self.qualidade_audio.addItems(audios)
         self.qualidade_video.addItems(videos)
-
-        ### RESETS
+    
         self.input_pesquisa.clear()
         self.paginas.setCurrentWidget(self.pag_video)
 
@@ -270,26 +259,27 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
 
 class Worker(QObject):
+    progresso = Signal(str) # Sinal que vai emitir o progresso atual
+    terminado = Signal() # Sinal que vai emitir quando o processo encerrar
     url = Signal(YouTube) # Sinal que vai emitir o objeto Youtube
 
-
-class InfoUrlRunnable(QRunnable):
-    def __init__(self, pesquisa:str, url_signal: SignalInstance) -> None:
+    def __init__(self, *, pesquisa:str = None) -> None:
         super().__init__()
-
+    
         self.pesquisa: str = pesquisa
-        self.url_signal: SignalInstance = url_signal
 
-    def run(self) -> None:
+    
+    def info_url(self):
         try:
             video = YouTube(self.pesquisa)
-            self.url_signal.emit(video)
+            self.url.emit(video)
 
         except Exception as e:
             if str(e).startswith('regex_search'):
-                self.url_signal.emit('regex_search')
+                self.url.emit('regex_search')
             else:
-                self.url_signal.emit('erro')
+                self.url.emit('erro')
+        self.terminado.emit()
 
 
 if __name__ == '__main__':

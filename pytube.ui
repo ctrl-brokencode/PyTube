@@ -91,7 +91,7 @@ QPushButton, QToolButton {
 	border-radius: 3px;
 }
 
-#frame_qualidade QComboBox::down-arrow {
+QComboBox::down-arrow {
 	image: url(:/icons/angle-down.svg);
 }
 
@@ -402,13 +402,13 @@ QComboBox QAbstractItemView {
               </widget>
              </item>
              <item>
-              <widget class="QToolButton" name="btn_pag_favoritos">
+              <widget class="QToolButton" name="btn_pag_pasta">
                <property name="cursor">
                 <cursorShape>PointingHandCursor</cursorShape>
                </property>
                <property name="icon">
                 <iconset resource="icons/icons.qrc">
-                 <normaloff>:/icons/heart.svg</normaloff>:/icons/heart.svg</iconset>
+                 <normaloff>:/icons/folder-open.svg</normaloff>:/icons/folder-open.svg</iconset>
                </property>
                <property name="iconSize">
                 <size>
@@ -452,7 +452,7 @@ QComboBox QAbstractItemView {
            <number>0</number>
           </property>
           <item>
-           <widget class="QStackedWidget" name="pages_stacked_widget">
+           <widget class="QStackedWidget" name="paginas">
             <property name="currentIndex">
              <number>1</number>
             </property>
@@ -902,6 +902,68 @@ QComboBox QAbstractItemView {
                      </widget>
                     </item>
                    </layout>
+                  </widget>
+                 </item>
+                </layout>
+               </widget>
+              </item>
+             </layout>
+            </widget>
+            <widget class="QWidget" name="pag_carregando">
+             <layout class="QHBoxLayout" name="horizontalLayout_15">
+              <item alignment="Qt::AlignHCenter|Qt::AlignVCenter">
+               <widget class="QFrame" name="frame_pag_carregando">
+                <property name="frameShape">
+                 <enum>QFrame::StyledPanel</enum>
+                </property>
+                <property name="frameShadow">
+                 <enum>QFrame::Raised</enum>
+                </property>
+                <layout class="QVBoxLayout" name="verticalLayout_9">
+                 <property name="spacing">
+                  <number>20</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>0</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>0</number>
+                 </property>
+                 <item>
+                  <widget class="QLabel" name="label_carregando">
+                   <property name="font">
+                    <font>
+                     <family>Ebrima</family>
+                     <pointsize>19</pointsize>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="text">
+                    <string>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;Carregando...&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</string>
+                   </property>
+                  </widget>
+                 </item>
+                 <item>
+                  <widget class="QProgressBar" name="progresso">
+                   <property name="font">
+                    <font>
+                     <family>Calibri Light</family>
+                     <italic>true</italic>
+                     <bold>true</bold>
+                    </font>
+                   </property>
+                   <property name="value">
+                    <number>90</number>
+                   </property>
+                   <property name="alignment">
+                    <set>Qt::AlignCenter</set>
+                   </property>
                   </widget>
                  </item>
                 </layout>

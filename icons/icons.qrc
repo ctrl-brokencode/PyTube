@@ -1,5 +1,6 @@
 <RCC>
   <qresource prefix="icons">
+    <file>folder-open.svg</file>
     <file>angle-up.svg</file>
     <file>angle-down.svg</file>
     <file>play-alt-fill.svg</file>

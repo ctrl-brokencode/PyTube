@@ -1,4 +1,4 @@
-from pytube import YouTube, Stream
+from pytube import YouTube
 from pytube.query import StreamQuery
 
 class YTVideo:
