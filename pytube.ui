@@ -30,7 +30,7 @@ QPushButton, QToolButton {
 	border: 0;
 }
 
-#central_widget, #pages_stacked_widget &gt; QWidget {
+#central_widget, #paginas QWidget {
 	background-color: #110200;
 }
 
@@ -543,6 +543,21 @@ QComboBox QAbstractItemView {
                  <enum>QFrame::Raised</enum>
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
+                 <property name="spacing">
+                  <number>0</number>
+                 </property>
+                 <property name="leftMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="topMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>10</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>10</number>
+                 </property>
                  <item>
                   <widget class="QFrame" name="frame__info_video">
                    <property name="frameShape">
@@ -753,7 +768,7 @@ QComboBox QAbstractItemView {
                   <widget class="QFrame" name="frame_qualidade">
                    <property name="font">
                     <font>
-                     <pointsize>8</pointsize>
+                     <pointsize>7</pointsize>
                     </font>
                    </property>
                    <property name="frameShape">
@@ -767,7 +782,7 @@ QComboBox QAbstractItemView {
                      <number>10</number>
                     </property>
                     <property name="topMargin">
-                     <number>0</number>
+                     <number>10</number>
                     </property>
                     <property name="rightMargin">
                      <number>10</number>
@@ -781,32 +796,17 @@ QComboBox QAbstractItemView {
                     <property name="verticalSpacing">
                      <number>3</number>
                     </property>
-                    <item row="1" column="0">
-                     <widget class="QComboBox" name="qualidade_audio">
+                    <item row="3" column="1" alignment="Qt::AlignRight">
+                     <widget class="QLabel" name="label_memoria_video">
                       <property name="font">
                        <font>
-                        <family>Arial</family>
-                        <pointsize>11</pointsize>
-                        <bold>true</bold>
+                        <family>Comic Sans MS</family>
+                        <pointsize>9</pointsize>
+                        <italic>true</italic>
                        </font>
                       </property>
-                      <property name="cursor">
-                       <cursorShape>PointingHandCursor</cursorShape>
-                      </property>
-                     </widget>
-                    </item>
-                    <item row="1" column="1">
-                     <widget class="QComboBox" name="qualidade_video">
-                      <property name="font">
-                       <font>
-                        <family>Arial</family>
-                        <pointsize>11</pointsize>
-                        <italic>false</italic>
-                        <bold>true</bold>
-                       </font>
-                      </property>
-                      <property name="cursor">
-                       <cursorShape>PointingHandCursor</cursorShape>
+                      <property name="text">
+                       <string>0,00 Kb</string>
                       </property>
                      </widget>
                     </item>
@@ -837,6 +837,49 @@ QComboBox QAbstractItemView {
                       </property>
                       <property name="text">
                        <string>Qualidade Vídeo</string>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="0">
+                     <widget class="QComboBox" name="qualidade_audio">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>11</pointsize>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="1" column="1">
+                     <widget class="QComboBox" name="qualidade_video">
+                      <property name="font">
+                       <font>
+                        <family>Arial</family>
+                        <pointsize>11</pointsize>
+                        <italic>false</italic>
+                        <bold>true</bold>
+                       </font>
+                      </property>
+                      <property name="cursor">
+                       <cursorShape>PointingHandCursor</cursorShape>
+                      </property>
+                     </widget>
+                    </item>
+                    <item row="3" column="0" alignment="Qt::AlignRight">
+                     <widget class="QLabel" name="label_memoria_audio">
+                      <property name="font">
+                       <font>
+                        <family>Comic Sans MS</family>
+                        <pointsize>9</pointsize>
+                        <italic>true</italic>
+                       </font>
+                      </property>
+                      <property name="text">
+                       <string>0,00 Kb</string>
                       </property>
                      </widget>
                     </item>
@@ -872,7 +915,7 @@ QComboBox QAbstractItemView {
                       <property name="font">
                        <font>
                         <family>Microsoft YaHei</family>
-                        <pointsize>12</pointsize>
+                        <pointsize>13</pointsize>
                         <bold>true</bold>
                        </font>
                       </property>
@@ -889,7 +932,7 @@ QComboBox QAbstractItemView {
                       <property name="font">
                        <font>
                         <family>Microsoft YaHei</family>
-                        <pointsize>12</pointsize>
+                        <pointsize>13</pointsize>
                         <bold>true</bold>
                        </font>
                       </property>

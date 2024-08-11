@@ -1,16 +1,19 @@
 import os
 import sys
 import json
-import traceback
 
+from proglog import ProgressBarLogger
 from moviepy.editor import VideoFileClip, AudioFileClip
 from PySide6.QtCore import QObject, QThread, Signal, SignalInstance, QRunnable, QThreadPool
 from PySide6.QtWidgets import QApplication, QMainWindow, QMessageBox, QPushButton, QFileDialog
 from pytube import YouTube, Stream, StreamQuery
-from ui_pytube import Ui_MainWindow
+from pytube.exceptions import RegexMatchError
 from pytube.innertube import _default_clients
 
+from ui_pytube import Ui_MainWindow
+
 _default_clients["ANDROID_MUSIC"] = _default_clients["ANDROID_CREATOR"]
+
 
 class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self) -> None:
@@ -31,11 +34,11 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         """
         Verifica se existe um diretório informado no arquivo 'dados.json'.
 
-        Retorna: 
-            str: O diretório informado pelo usuário, se encontrado.
+        ### Retorna: 
+            str: O diretório informado pelo usuário.
             None: Se nenhum diretório for fornecido ou se o arquivo 'dados.json' não existir.
         
-        Notas:
+        ### Notas:
             O arquivo 'dados.json' deve estar no formato JSON válido e conter a chave 'dir' com o valor do diretório.
         """
 
@@ -50,13 +53,10 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Verifica se um diretório de download de arquivo é válido e definido.
 
         Se não houver um diretório, exibe uma mensagem de aviso e solicita que o usuário defina um diretório.
-        Se o usuário selecionar um diretório, este é salvo no arquivo 'dados.json' e retorna True.
-        Se o usuário não selecionar um diretório, exibe uma mensagem de erro e retorna False.
+        - Se o usuário selecionar um diretório, este é salvo no arquivo 'dados.json' e retorna `True`.
+        - Se o usuário não selecionar um diretório, exibe uma mensagem de erro e retorna `False`.
 
-        Retorna:
-            bool: True se um diretório válido estiver definido. Caso contrário, False.
-
-        Notas:
+        ### Notas:
             O arquivo 'dados.json' é criado ou atualizado com o diretório selecionado pelo usuário.
         """
 
@@ -81,33 +81,38 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Busca o vídeo a partir da pesquisa fornecida pelo usuário na caixa de texto de pesquisa.
         
         Caso seja um link do Youtube válido, alterna para a página de carregamento, busca as informações e as exibe na página, voltando para a página de vídeo assim que este for carregado.
+        Caso contrário, nada acontece.
         """
 
         pesquisa: str = self.input_pesquisa.text()
         if not pesquisa:
             return
 
-        self.worker = Worker()
-
-        self.worker.url.connect(self.informacoes_video)
+        self.sinal = Signals()
+        self.sinal.url.connect(self.informacoes_video)
+        self.sinal.erro.connect(self.registrar_erro)
         
         self.progresso.hide()
         self.paginas.setCurrentWidget(self.pag_carregando)
-        runnable = InfoUrlRunnable(pesquisa, self.worker.url)
+        
+        runnable = InfoUrlRunnable(pesquisa, self.sinal.url, self.sinal.erro)
         QThreadPool.globalInstance().start(runnable)
 
 
     def informacoes_video(self, video:YouTube | str) -> None:
         """
-        Recebe o objeto Youtube recebido pelo sinal emitido em `self.url_signal.emit(video)`.
+        Processa e registra informações recebidas pelo sinal emitido pela variável url da classe Signals.
 
-        Caso o sinal emita uma string, então algum erro ocorreu.
-        Caso o sinal emita um objeto Youtube, as informações do vídeo são exibidas na página de vídeo.
+        O sinal pode emitir dois tipos diferentes: um objeto `Youtube` ou uma `string`.
+
+        ### Sinais emitidos: 
+            :Youtube: As informações serão exibidas na página de vídeo.
+            :str: Algum erro ocorreu.
         """
 
         ### CHECAGEM DO SINAL EMITIDO
-        if isinstance(video, str):
-            if video == 'regex_search':
+        if not isinstance(video, YouTube):
+            if str(video) == 'regex_search':
                 QMessageBox.warning(self, 'Erro', 'Você não forneceu um link válido.')
             else:
                 QMessageBox.critical(self, 'Erro', 'Ocorreu um erro ao tentar pesquisar seu vídeo.\nPor favor, tente novamente.')
@@ -117,7 +122,6 @@ class MainWindow(QMainWindow, Ui_MainWindow):
 
         ### REGISTRAR INFORMAÇÕES        
         self.video: YouTube = video
-        self.video.register_on_progress_callback(self.progresso_download)
         
         duracao: int = self.video.length
         mins: int = duracao // 60
@@ -141,7 +145,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         
         self.qualidade_audio.addItems(audios)
         self.qualidade_video.addItems(videos)
-
+        
         ### RESETS
         self.input_pesquisa.clear()
         self.paginas.setCurrentWidget(self.pag_video)
@@ -152,7 +156,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Baixa o vídeo selecionado e o salva no diretório definido.
 
         Se o diretório não existir, solicita que o usuário selecione um diretório.
-        Baixa o vídeo em duas partes (vídeo e áudio) e as mescla em um arquivo único.
+        Primeiro, o programa baixa o vídeo e o áudio e os mescla em um arquivo único.
         Se ocorrer um erro durante o processo, exibe uma mensagem de erro e registra o erro no log.
 
         Notas:
@@ -163,64 +167,54 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return
 
         qualidade_video: str = self.qualidade_video.currentText()
-        video_stream: StreamQuery = self.video.streams.filter(mime_type='video/mp4', res=qualidade_video, only_video=True)
+        video: StreamQuery = self.video.streams.filter(mime_type='video/mp4', res=qualidade_video, only_video=True)
 
         qualidade_audio: str = self.qualidade_audio.currentText()
-        audio_stream: StreamQuery = self.video.streams.filter(mime_type='audio/mp4', abr=qualidade_audio, only_audio=True)
+        audio: StreamQuery = self.video.streams.filter(mime_type='audio/mp4', abr=qualidade_audio, only_audio=True)
 
         if not os.path.exists(self.dir_temp):
             os.mkdir(self.dir_temp)
 
-        titulo: str = video_stream.first().title
+        def concluido() -> None:
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle('Vídeo')
+            msg.setText('O vídeo foi baixado com sucesso! Gostaria de acessar a pasta?')
+            msg.addButton('Não', QMessageBox.NoRole) # == 0
+            btn_padrao: QPushButton = msg.addButton('Sim', QMessageBox.YesRole) # == 1
+            
+            msg.setDefaultButton(btn_padrao)
+            opcao: int = msg.exec()
+            
+            if opcao == 1: # 1 == 'Sim'
+                os.startfile(self.dir_download)
+
+            self.paginas.setCurrentWidget(self.pag_video)
+
+        ### DEFINIR PÁGINA
+        self.paginas.setCurrentWidget(self.pag_carregando)
+        self.progresso.show()
+        self.progresso.setValue(0)
+
+        ### THREAD SEPARADA PARA EXECUÇÃO DO DOWNLOAD
+        self.thread_video = QThread()
+        self.worker_video = DownloadVideoWorker(video, audio, self.dir_download, self.dir_temp)
+        self.worker_video.moveToThread(self.thread_video)
+
+        ### REGISTRAR FUNÇÃO DE PROGRESSO
+        self.video.register_on_progress_callback(self.worker_video.progress_callback)
+
+        ### CONECTAR SLOTS E SIGNALS
+        self.thread_video.started.connect(self.worker_video.run)
+        self.worker_video.erro.connect(self.registrar_erro)
         
-        try:
-            # Baixa o vídeo e o áudio separadamente no diretório temporário
-            video: str = video_stream.first().download(self.dir_temp, titulo+'.mp4')
-            audio: str = audio_stream.first().download(self.dir_temp, titulo+'.mp3')
-        except Exception as e:
-            self.loggar_erro(e)
-            QMessageBox.critical(self, 'Erro', 'Ocorreu um erro ao baixar o vídeo.\nPor favor, tente novamente mais tarde.')
-
-        try:
-            # Mescla o vídeo e o áudio baixados em um único arquivo
-            video_clip = VideoFileClip(video)
-            audio_clip = AudioFileClip(audio)
-
-            final_clip = video_clip.set_audio(audio_clip)
-            final_clip.write_videofile(titulo+'.mp4', codec="libx264")
-
-            video_clip.close()
-            audio_clip.close()
-            final_clip.close()
-        except Exception as e:
-            self.loggar_erro(e)
-            # Remover arquivos temporários
-            os.remove(video)
-            os.remove(audio)
-            os.rmdir(self.dir_temp)
-            QMessageBox.critical(self, 'Erro', 'Ocorreu um erro ao baixar o vídeo.\nPor favor, tente novamente mais tarde.')
-
-        # Remover arquivos temporários
-        os.remove(video)
-        os.remove(audio)
-        os.rmdir(self.dir_temp)
-
-        # Move o novo arquivo para o diretório fornecido pelo usuário
-        file_path: str = os.getcwd()
-        os.rename(rf'{file_path}\{titulo}.mp4', rf'{self.dir_download}\{titulo}.mp4')
-
-        msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Information)
-        msg.setWindowTitle('Vídeo')
-        msg.setText('O vídeo foi baixado com sucesso! Gostaria de acessar a pasta?')
-        msg.addButton('Não', QMessageBox.NoRole) # == 0
-        btn_padrao: QPushButton = msg.addButton('Sim', QMessageBox.YesRole) # == 1
+        self.worker_video.sucesso.connect(concluido)
+        self.worker_video.terminado.connect(self.thread_video.quit)
+        self.worker_video.terminado.connect(self.worker_video.deleteLater)
+        self.thread_video.finished.connect(self.thread_video.deleteLater)
+        self.worker_video.progresso.connect(self.definir_valor_progresso)
         
-        msg.setDefaultButton(btn_padrao)
-        opcao: int = msg.exec()
-        
-        if opcao == 1: # 1 == 'Sim'
-            os.startfile(self.dir_download)
+        self.thread_video.start()
        
         
     def baixar_audio(self) -> None:
@@ -228,6 +222,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         Baixa o áudio selecionado e o salva no diretório definido pelo usuário.
 
         Se o diretório não existir, solicita que o usuário selecione um diretório.
+        Se ocorrer um erro durante o processo, exibe uma mensagem de erro e registra o erro no log.
         """
         
         if not self.diretorio_existe():
@@ -235,61 +230,224 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                 
         qualidade_audio: str = self.qualidade_audio.currentText()
         audio: StreamQuery = self.video.streams.filter(mime_type='audio/mp4', abr=qualidade_audio, only_audio=True)
+
+        ### DEFINIR PÁGINA
+        self.paginas.setCurrentWidget(self.pag_carregando)
+        self.progresso.show()
+        self.progresso.setValue(0)
         
-        try:
-            # Baixa o áudio no diretório de download fornecido pelo usuário
-            audio.first().download(output_path=self.dir_download)
-        except Exception as e:
-            self.loggar_erro(e)
-            QMessageBox.critical(self, 'Erro', 'Ocorreu um erro ao baixar o áudio.\nPor favor, tente novamente mais tarde.')
+        def concluido():
+            msg = QMessageBox(self)
+            msg.setIcon(QMessageBox.Information)
+            msg.setWindowTitle('Áudio')
+            msg.setText('O áudio foi baixado com sucesso! Gostaria de acessar a pasta?')
+            msg.addButton('Não', QMessageBox.NoRole) # == 0
+            btn_padrao: QPushButton = msg.addButton('Sim', QMessageBox.YesRole) # == 1
+            
+            msg.setDefaultButton(btn_padrao)
+            opcao: int = msg.exec()
+            
+            if opcao == 1: # 1 == 'Sim'
+                os.startfile(self.dir_download)
+
+            self.paginas.setCurrentWidget(self.pag_video)
+
+        ### THREAD SEPARADA PARA EXECUÇÃO DO DOWNLOAD
+        self.thread_audio = QThread()
+        self.worker_audio = DownloadAudioWorker(audio, self.dir_download)
+        self.worker_audio.moveToThread(self.thread_audio)
+
+        ### REGISTRAR FUNÇÃO DE PROGRESSO
+        self.video.register_on_progress_callback(self.worker_audio.progress_callback)
+
+        ### CONECTAR SLOTS E SIGNALS
+        self.thread_audio.started.connect(self.worker_audio.run)
+        self.worker_audio.progresso.connect(self.definir_valor_progresso)
+        self.worker_audio.erro.connect(self.registrar_erro)
+        self.worker_audio.sucesso.connect(concluido)
         
-        msg = QMessageBox(self)
-        msg.setIcon(QMessageBox.Information)
-        msg.setWindowTitle('Áudio')
-        msg.setText('O áudio foi baixado com sucesso! Gostaria de acessar a pasta?')
-        msg.addButton('Não', QMessageBox.NoRole) # == 0
-        btn_padrao: QPushButton = msg.addButton('Sim', QMessageBox.YesRole) # == 1
+        self.worker_audio.terminado.connect(self.thread_audio.quit)
+        self.worker_audio.terminado.connect(self.worker_audio.deleteLater)
+        self.thread_audio.finished.connect(self.thread_audio.deleteLater)
         
-        msg.setDefaultButton(btn_padrao)
-        opcao: int = msg.exec()
-        
-        if opcao == 1: # 1 == 'Sim'
-            os.startfile(self.dir_download)
+        self.thread_audio.start()
 
 
-    def loggar_erro(self, e: Exception) -> None:
-        """
-        Grava o erro em um arquivo para debug.
-        """
-        with open('error.txt', 'w', encoding='utf-8') as file:
-            file.write(str(e))
-
-        with open("erro.log", "a", encoding='utf-8') as f:
-            f.write(f"Erro: {e}\n")
-            f.write(traceback.format_exc() + "\n")
+    def definir_valor_progresso(self, value:int) -> None:
+        self.progresso.setValue(value)
 
 
-class Worker(QObject):
-    url = Signal(YouTube) # Sinal que vai emitir o objeto Youtube
+    def registrar_erro(self, erro:str, exception: Exception):
+        erro_tecnico = False
+        # FIXME: trocar essas frases genéricas 
+        match erro:
+            case 'regex':
+                QMessageBox.critical(self, 'Pesquisa', 'Você não forneceu um link válido. Por favor, insira um link vindo do Youtube e tente novamente.')
+            case 'download':
+                QMessageBox.critical(self, 'Download', 'Ocorreu um erro ao baixar o vídeo.\nPor favor, tente novamente mais tarde.')
+                erro_tecnico = True
+            case 'render_video':
+                QMessageBox.critical(self, 'Renderização', 'Ocorreu um erro ao renderizar o vídeo.\nPor favor, tente novamente mais tarde.')
+                erro_tecnico = True
+            
+        self.paginas.setCurrentWidget(self.pag_video)
+
+        if erro_tecnico:
+            with open('error.log', 'a', encoding='utf-8') as file:
+                file.write(str(exception))
+
+
+class Signals(QObject):
+    url = Signal(YouTube)
+    erro = Signal(str, Exception)
+
+    progresso = Signal(int)
 
 
 class InfoUrlRunnable(QRunnable):
-    def __init__(self, pesquisa:str, url_signal: SignalInstance) -> None:
+    def __init__(self, pesquisa:str, sinal: SignalInstance, erro: SignalInstance) -> None:
         super().__init__()
 
         self.pesquisa: str = pesquisa
-        self.url_signal: SignalInstance = url_signal
+        self.sinal: SignalInstance = sinal
+        self.erro: SignalInstance = erro
+
 
     def run(self) -> None:
         try:
             video = YouTube(self.pesquisa)
-            self.url_signal.emit(video)
+            self.sinal.emit(video)
+
+        except RegexMatchError as e:
+            self.erro.emit('regex', e)
 
         except Exception as e:
-            if str(e).startswith('regex_search'):
-                self.url_signal.emit('regex_search')
-            else:
-                self.url_signal.emit('erro')
+            self.erro.emit('video_nao_encontrado', e)
+
+
+class DownloadAudioWorker(QObject):
+    progresso = Signal(int)
+    erro = Signal(str, Exception)
+    terminado = Signal()
+    sucesso = Signal()
+
+
+    def __init__(self, audio: StreamQuery, dir_download: str) -> None:
+        super().__init__()
+        self.audio: StreamQuery = audio
+        self.dir_download: str = dir_download
+
+
+    def progress_callback(self, stream: StreamQuery, _, bytes_restantes: int) -> None:
+        tamanho_em_bytes: float = stream.filesize
+        porcentagem = int(((tamanho_em_bytes - bytes_restantes) / tamanho_em_bytes) * 100)
+        self.progresso.emit(porcentagem)
+
+
+    def run(self) -> None:
+        try:
+            # Baixa o áudio no diretório de download fornecido pelo usuário
+            self.audio.first().download(output_path=self.dir_download)
+        except Exception as e:
+            self.erro.emit('download', e)
+        else:
+            self.sucesso.emit()
+        finally:
+            self.terminado.emit()
+
+
+class DownloadVideoWorker(QThread):
+    progresso = Signal(int)
+    erro = Signal(str, Exception)
+    terminado = Signal()
+    sucesso = Signal()
+
+
+    def __init__(self, video: StreamQuery, audio: StreamQuery, dir_download: str, dir_temp: str) -> None:
+        super().__init__()   
+        self.video: StreamQuery = video
+        self.audio: StreamQuery = audio
+        self.dir_download: str = dir_download
+        self.dir_temp: str = dir_temp
+
+
+    def progress_callback(self, stream: StreamQuery, _, bytes_restantes: int) -> None:
+        """Emite um sinal com a porcentagem atual do download do video."""
+        tamanho_em_bytes: float = stream.filesize
+        porcentagem = int(((tamanho_em_bytes - bytes_restantes) / tamanho_em_bytes) * 100)
+        self.progresso.emit(porcentagem)
+
+
+    def run(self) -> None:
+        titulo: str = self.video.first().title
+        try:
+            video: str = self.video.first().download(self.dir_temp, titulo+'.mp4')
+            audio: str = self.audio.first().download(self.dir_temp, titulo+'.mp3')
+
+        except OSError as e:
+            # Erro de nome de arquivo
+            titulo = titulo.replace('|', '-')
+
+            try:
+                video: str = self.video.first().download(self.dir_temp, titulo+'.mp4')
+                audio: str = self.audio.first().download(self.dir_temp, titulo+'.mp3')
+            except Exception as e:
+                print('Erro 2')
+            
+        except Exception as e:
+            self.erro.emit('download', e)
+            return
+
+        logger = MyBarLogger(self.progresso)
+
+        try:
+            # Mescla o vídeo e o áudio baixados em um único arquivo
+            video_clip = VideoFileClip(video)
+            audio_clip = AudioFileClip(audio)
+            final_clip: VideoFileClip = video_clip.set_audio(audio_clip)
+            final_clip.write_videofile(titulo+'.mp4', codec='libx264', logger=logger)
+
+        except Exception as e:
+            self.erro.emit('render_video', e)
+
+        else:
+            # Move o novo arquivo para o diretório fornecido pelo usuário
+            file_path: str = os.getcwd()
+            os.rename(os.path.join(file_path, titulo+'.mp4'),
+                    os.path.join(self.dir_download, titulo+'.mp4'))
+            self.sucesso.emit()
+            
+        finally:
+            video_clip.close()
+            audio_clip.close()
+            final_clip.close()
+            # Remover arquivos temporários
+            os.remove(video)
+            os.remove(audio)
+            os.rmdir(self.dir_temp)
+            self.terminado.emit()
+            
+
+class MyBarLogger(ProgressBarLogger):
+    def __init__(self, sinal: SignalInstance):
+        super().__init__()
+        self.sinal: SignalInstance = sinal
+        
+    
+    def callback(self, **changes) -> None:
+        """Toda vez que a mensagem do logger é atualizada, a função é chamada com o dicionário `changes`
+        """
+        
+        for (parameter, value) in changes.items():
+            print ('Parameter %s is now %s' % (parameter, value))
+
+    
+    def bars_callback(self, bar, _, value, old_value=None) -> None:
+        """Printa a porcentagem atual do progresso. A função é chamada toda vez que o progresso atualizar.
+        """
+        
+        porcentagem: float = (value / self.bars[bar]['total']) * 100
+        self.sinal.emit(int(porcentagem))
 
 
 if __name__ == '__main__':
